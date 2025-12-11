@@ -13,8 +13,9 @@ namespace RedArbor.Application.Commands
 
         public DeleteEmployeeCommand(IEmployesRepository repository)
         {
-            _repository = repository;
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
+
 
 
         /// <summary>

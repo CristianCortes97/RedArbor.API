@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{41AA09
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infraestructure", "Infraestructure", "{23EBEDB3-4192-45F3-9BE9-7413F04C2754}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedArbor.Tests", "RedArbor.Tests\RedArbor.Tests.csproj", "{EC7BCFA1-70BF-43C9-A53E-BB66C0729B3C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{79903611-5906-4B12-A2B2-454E15CF7078}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79903611-5906-4B12-A2B2-454E15CF7078}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79903611-5906-4B12-A2B2-454E15CF7078}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC7BCFA1-70BF-43C9-A53E-BB66C0729B3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC7BCFA1-70BF-43C9-A53E-BB66C0729B3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC7BCFA1-70BF-43C9-A53E-BB66C0729B3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC7BCFA1-70BF-43C9-A53E-BB66C0729B3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
