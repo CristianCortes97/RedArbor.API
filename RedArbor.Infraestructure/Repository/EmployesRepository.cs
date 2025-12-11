@@ -2,15 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using RedArbor.Domain.Entities;
 using RedArbor.Domain.Interface;
-using RedArbor.Domain.Interfaces;
 using RedArbor.Infraestructure.Context;
 
-namespace RedArbor.Infrastructure.Repositories
+namespace RedArbor.Infraestructure.Repository
 {
-    /// <summary>
-    /// Repositorio para la entidad Employee
-    /// Implementa escrituras con EF Core y lecturas con Dapper (patrón CQRS)
-    /// </summary>
+    
     public class EmployeeRepository : IEmployesRepository
     {
         private readonly DbredArborContext _context;
@@ -27,7 +23,7 @@ namespace RedArbor.Infrastructure.Repositories
         #region Comandos - Escrituras con EF Core
 
         /// <summary>
-        /// Agrega un nuevo employee a la base de datos
+        /// Agrega un nuevo employe a la base de datos
         /// </summary>
         public async Task<Employe> AddAsync(Employe employee)
         {
@@ -37,7 +33,7 @@ namespace RedArbor.Infrastructure.Repositories
         }
 
         /// <summary>
-        /// Actualiza un employee existente
+        /// Actualiza un employe existente
         /// </summary>
         public async Task<bool> UpdateAsync(Employe employee)
         {
@@ -47,7 +43,7 @@ namespace RedArbor.Infrastructure.Repositories
             if (existingEmployee == null)
                 return false;
 
-            // Actualizar todas las propiedades
+            
             existingEmployee.CompanyId = employee.CompanyId;
             existingEmployee.Email = employee.Email;
             existingEmployee.Password = employee.Password;
@@ -60,7 +56,7 @@ namespace RedArbor.Infrastructure.Repositories
             existingEmployee.Telephone = employee.Telephone;
             existingEmployee.CreatedOn = employee.CreatedOn;
             existingEmployee.UpdatedOn = employee.UpdatedOn;
-            existingEmployee.DeletedOn = employee.DeletedOn;
+            existingEmployee.DeleteOn = employee.DeleteOn;
             existingEmployee.Lastlogin = employee.Lastlogin;
 
             _context.Employes.Update(existingEmployee);
@@ -70,7 +66,7 @@ namespace RedArbor.Infrastructure.Repositories
         }
 
         /// <summary>
-        /// Elimina un employee de la base de datos
+        /// Elimina un employe de la base de datos
         /// </summary>
         public async Task<bool> DeleteAsync(int id)
         {
@@ -90,7 +86,7 @@ namespace RedArbor.Infrastructure.Repositories
         #region Queries - Lecturas con Dapper
 
         /// <summary>
-        /// Obtiene todos los employees usando Dapper
+        /// Obtiene todos los employee usando Dapper
         /// </summary>
         public async Task<IEnumerable<Employe>> GetAllAsync()
         {
@@ -98,17 +94,17 @@ namespace RedArbor.Infrastructure.Repositories
 
             const string sql = @"
                 SELECT 
-                    Id, CompanyId, CreatedOn, DeletedOn, Email, 
+                    Id, CompanyId, CreatedOn, DeleteOn, Email, 
                     Fax, Name, Lastlogin, Password, PortalId, 
                     RoleId, StatusId, Telephone, UpdatedOn, Username
-                FROM Employees
+                FROM Employes
                 ORDER BY Id";
 
             return await connection.QueryAsync<Employe>(sql);
         }
 
         /// <summary>
-        /// Obtiene un employee por ID usando Dapper
+        /// Obtiene un employe por ID usando Dapper
         /// </summary>
         public async Task<Employe?> GetByIdAsync(int id)
         {
@@ -116,10 +112,10 @@ namespace RedArbor.Infrastructure.Repositories
 
             const string sql = @"
                 SELECT 
-                    Id, CompanyId, CreatedOn, DeletedOn, Email, 
+                    Id, CompanyId, CreatedOn, DeleteOn, Email, 
                     Fax, Name, Lastlogin, Password, PortalId, 
                     RoleId, StatusId, Telephone, UpdatedOn, Username
-                FROM Employees
+                FROM Employes
                 WHERE Id = @Id";
 
             return await connection.QueryFirstOrDefaultAsync<Employe>(sql, new { Id = id });
@@ -127,13 +123,13 @@ namespace RedArbor.Infrastructure.Repositories
 
         
         /// <summary>
-        /// Verifica si existe un employee con el ID dado
+        /// Verifica si existe un employe con el ID dado
         /// </summary>
         public async Task<bool> ExistsAsync(int id)
         {
             using var connection = _connectionFactory.CreateConnection();
 
-            const string sql = "SELECT COUNT(1) FROM Employees WHERE Id = @Id";
+            const string sql = "SELECT COUNT(1) FROM Employes WHERE Id = @Id";
 
             var count = await connection.ExecuteScalarAsync<int>(sql, new { Id = id });
 

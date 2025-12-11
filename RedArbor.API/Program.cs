@@ -1,10 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using RedArbor.Domain.Interface;
-using RedArbor.Domain.Interfaces;
 using RedArbor.Infraestructure.Context;
 using RedArbor.Infraestructure.Factories;
-using RedArbor.Infrastructure.Repositories;
+using RedArbor.Infraestructure.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,12 +41,12 @@ builder.Services.AddScoped<RedArbor.Application.Commands.CreateEmployeeCommand>(
 builder.Services.AddScoped<RedArbor.Application.Commands.UpdateEmployeeCommand>();
 builder.Services.AddScoped<RedArbor.Application.Commands.DeleteEmployeeCommand>();
 
-//// Registrar Queries
-//builder.Services.AddScoped<RedArbor.Application.Queries.GetAllEmployeesQuery>();
-//builder.Services.AddScoped<RedArbor.Application.Queries.GetEmployeeByIdQuery>();
+// Registrar Queries
+builder.Services.AddScoped<RedArbor.Application.Queries.GetAllEmployeesQuery>();
+builder.Services.AddScoped<RedArbor.Application.Queries.GetEmployeeByIdQuery>();
 
 
-// Registrar FluentValidation
+// Registrar Validadores FluentValidation
 builder.Services.AddScoped<RedArbor.Application.Validators.CreateEmployeeValidator>();
 builder.Services.AddScoped<RedArbor.Application.Validators.UpdateEmployeeValidator>();
 
@@ -63,7 +62,7 @@ builder.Services.AddSwaggerGen(c =>
     {
         Title = "API RedArbor",
         Version = "8.0.0",
-        Description = "Api para readarbor con un crud completo"
+        Description = "Api RESTful readarbor para gestión de empleados, crud completo"
     });
 });
 

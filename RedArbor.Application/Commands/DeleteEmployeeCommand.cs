@@ -1,5 +1,4 @@
 ﻿using RedArbor.Domain.Interface;
-using RedArbor.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +16,12 @@ namespace RedArbor.Application.Commands
             _repository = repository;
         }
 
+
+        /// <summary>
+        /// Metodo para Eliminar un empleado existente
+        /// </summary>
+        /// <param name="id">id a eliminar</param>
+        /// <returns>204 no content</returns>
         public async Task<bool> ExecuteAsync(int id)
         {
             return await _repository.DeleteAsync(id);

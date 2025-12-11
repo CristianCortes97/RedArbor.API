@@ -2,7 +2,6 @@
 using RedArbor.Application.DTOs;
 using RedArbor.Domain.Entities;
 using RedArbor.Domain.Interface;
-using RedArbor.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +10,7 @@ using System.Threading.Tasks;
 
 namespace RedArbor.Application.Commands
 {
-    /// <summary>
-    /// Command para actualizar un Employee existente
-    /// Responsabilidad: Coordinar la actualización de un employee usando el repositorio
-    /// </summary>
+
     public class UpdateEmployeeCommand
     {
         private readonly IEmployesRepository _repository;
@@ -27,20 +23,19 @@ namespace RedArbor.Application.Commands
         }
 
         /// <summary>
-        /// Ejecuta el comando para actualizar un employee
+        /// Metodo para actualizar un employe
         /// </summary>
-        /// <param name="id">ID del employee a actualizar</param>
-        /// <param name="dto">Nuevos datos del employee</param>
+        /// <param name="id">ID del employe a actualizar</param>
+        /// <param name="dto">Nuevos datos del employe</param>
         /// <returns>True si se actualizó correctamente, False si no se encontró</returns>
         public async Task<bool> ExecuteAsync(int id, UpdateEmployeeDto dto)
         {
-            // Mapear DTO a entidad de dominio usando AutoMapper
+
             var employee = _mapper.Map<Employe>(dto);
 
-            // Asignar el ID que viene de la URL
+
             employee.Id = id;
 
-            // Actualizar en la base de datos usando EF Core
             return await _repository.UpdateAsync(employee);
         }
     }

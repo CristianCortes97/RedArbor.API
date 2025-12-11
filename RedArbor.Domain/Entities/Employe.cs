@@ -1,7 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace RedArbor.Domain.Entities;
 
-namespace RedArbor.Domain.Entities;
+
+/// <summary>
+/// Entidad Employe que representa a un empleado en el sistema
+/// </summary>
 
 public partial class Employe
 {
@@ -32,8 +34,6 @@ public partial class Employe
     public string? Telephone { get; set; }
 
     public DateTime? UpdatedOn { get; set; }
-
-    public DateTime? DeletedOn { get; set; }
 
     public string Username { get; set; } = null!;
 }

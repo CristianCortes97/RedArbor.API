@@ -9,19 +9,19 @@ using System.Threading.Tasks;
 namespace RedArbor.Application.Validators
 {
     /// <summary>
-    /// Validador para UpdateEmployeeDto
+    /// Validador para UpdateEmployeDto
     /// Valida que todos los campos obligatorios estén presentes y sean correctos al actualizar
     /// </summary>
     public class UpdateEmployeeValidator : AbstractValidator<UpdateEmployeeDto>
     {
         public UpdateEmployeeValidator()
         {
-            // Validación de CompanyId
+          
             RuleFor(x => x.CompanyId)
                 .GreaterThan(0)
                 .WithMessage("CompanyId debe ser mayor a 0");
 
-            // Validación de Email
+           
             RuleFor(x => x.Email)
                 .NotEmpty()
                 .WithMessage("Email es obligatorio")
@@ -30,36 +30,35 @@ namespace RedArbor.Application.Validators
                 .MaximumLength(255)
                 .WithMessage("Email no puede exceder 255 caracteres");
 
-            // Validación de Password
+           
             RuleFor(x => x.Password)
                 .NotEmpty()
                 .WithMessage("Password es obligatorio")
                 .MaximumLength(255)
                 .WithMessage("Password no puede exceder 255 caracteres");
 
-            // Validación de PortalId
+     
             RuleFor(x => x.PortalId)
                 .GreaterThan(0)
                 .WithMessage("PortalId debe ser mayor a 0");
 
-            // Validación de RoleId
+            
             RuleFor(x => x.RoleId)
                 .GreaterThan(0)
                 .WithMessage("RoleId debe ser mayor a 0");
 
-            // Validación de StatusId
+            
             RuleFor(x => x.StatusId)
                 .GreaterThan(0)
                 .WithMessage("StatusId debe ser mayor a 0");
 
-            // Validación de Username
             RuleFor(x => x.Username)
                 .NotEmpty()
                 .WithMessage("Username es obligatorio")
                 .MaximumLength(100)
                 .WithMessage("Username no puede exceder 100 caracteres");
 
-            // Validaciones opcionales (solo si tienen valor)
+            
             RuleFor(x => x.Name)
                 .MaximumLength(100)
                 .When(x => !string.IsNullOrEmpty(x.Name))

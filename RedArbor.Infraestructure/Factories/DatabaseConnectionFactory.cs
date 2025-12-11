@@ -10,17 +10,13 @@ using System.Threading.Tasks;
 
 namespace RedArbor.Infraestructure.Factories
 {
-    /// <summary>
-    /// Implementación del factory para crear conexiones a SQL Server
-    /// Lee la connection string desde la configuración y crea conexiones para Dapper
-    /// </summary>
+   
     public class DatabaseConnectionFactory : IDatabaseConnectionFactory
     {
         private readonly string _connectionString;
 
         public DatabaseConnectionFactory(IConfiguration configuration)
-        {
-            // Obtener la connection string desde appsettings.json
+        {          
             _connectionString = configuration.GetConnectionString("DefaultConnection")
                 ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found in configuration.");
         }

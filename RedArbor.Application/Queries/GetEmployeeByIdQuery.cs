@@ -1,14 +1,10 @@
 ﻿using AutoMapper;
 using RedArbor.Application.DTOs;
 using RedArbor.Domain.Interface;
-using RedArbor.Domain.Interfaces;
 
-namespace RedArbor.Application.Queries.GetEmployeeById
+namespace RedArbor.Application.Queries
 {
-    /// <summary>
-    /// Query para obtener un employee por su ID
-    /// Implementa el patrón CQRS separando las lecturas
-    /// </summary>
+
     public class GetEmployeeByIdQuery
     {
         private readonly IEmployesRepository _repository;
@@ -21,20 +17,17 @@ namespace RedArbor.Application.Queries.GetEmployeeById
         }
 
         /// <summary>
-        /// Ejecuta la query para obtener un employee específico
+        ///  Metodo para obtener un employe específico
         /// </summary>
-        /// <param name="id">ID del employee a buscar</param>
-        /// <returns>EmployeeDto o null si no existe</returns>
+        /// <param name="id">ID del employe a buscar</param>
+        /// <returns>EmployeDto o null si no existe</returns>
         public async Task<EmployesDto?> ExecuteAsync(int id)
         {
-            // 1. Obtener la entidad desde el repositorio (usa Dapper)
             var employee = await _repository.GetByIdAsync(id);
 
-            // 2. Si no existe, retornar null
             if (employee == null)
                 return null;
 
-            // 3. Mapear la entidad de dominio a DTO usando AutoMapper
             return _mapper.Map<EmployesDto>(employee);
         }
     }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace RedArbor.Application.DTOs
 {
    /// <summary>
-    /// DTO para representar un Employee en las respuestas de la API
+    /// DTO para representar un Employe en las respuestas de la API
     /// </summary>
     public class EmployesDto
     {
