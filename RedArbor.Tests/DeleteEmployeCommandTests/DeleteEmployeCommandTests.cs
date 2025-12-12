@@ -3,7 +3,7 @@ using Moq;
 using RedArbor.Application.Commands;
 using RedArbor.Domain.Interface;
 
-namespace RedArbor.Tests.CommandsTests
+namespace RedArbor.Tests.DeleteEmployeCommandTests
 {
     /// <summary>
     /// Tests para DeleteEmployeeCommand

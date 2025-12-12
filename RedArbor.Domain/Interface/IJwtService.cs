@@ -1,6 +1,6 @@
 ﻿using RedArbor.Domain.Entities;
 
-namespace RedArbor.Domain.Interfaces
+namespace RedArbor.Domain.Interface
 {
     /// <summary>
     /// Interface para el servicio de generación de tokens JWT

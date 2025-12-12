@@ -1,13 +1,12 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+ï»¿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RedArbor.Domain.Interface;
-using RedArbor.Domain.Interfaces;
 using RedArbor.Infraestructure.Context;
 using RedArbor.Infraestructure.Factories;
 using RedArbor.Infraestructure.Repository;
-using RedArbor.Infrastructure.Services;
+using RedArbor.Infraestructure.Services;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,11 +28,11 @@ builder.Services.AddCors(options =>
 });
 
 
-// Configuración JWT desde appsettings.json
+// ConfiguraciÃ³n JWT desde appsettings.json
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = jwtSettings["SecretKey"] ?? throw new InvalidOperationException("JWT SecretKey not configured");
 
-// Autenticación JWT
+// AutenticaciÃ³n JWT
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -68,7 +67,7 @@ builder.Services.AddAutoMapper(typeof(RedArbor.Application.Mappings.MappingProfi
 // Registrar Database Connection Factory para Dapper
 builder.Services.AddSingleton<IDatabaseConnectionFactory, DatabaseConnectionFactory>();
 
-// Servicios de Autenticación
+// Servicios de AutenticaciÃ³n
 builder.Services.AddScoped<IJwtService, JwtService>();
 
 // Registrar Repositorios
@@ -97,11 +96,38 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
+    // Documento API
     c.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "API RedArbor",
-        Version = "8.0.0",
-        Description = "Api RESTful readarbor para gestión de empleados, crud completo"
+        Version = "v1",
+        Description = "API RESTful RedArbor para gestiÃ³n de empleados"
+    });
+
+    // âœ… CONFIGURACIÃ“N CORRECTA PARA JWT
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "Ingrese el token JWT con el formato: Bearer",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,      
+        Scheme = "bearer",                   
+        BearerFormat = "JWT"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] { }  
+        }
     });
 });
 

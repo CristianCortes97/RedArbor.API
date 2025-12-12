@@ -6,7 +6,7 @@ using RedArbor.Domain.Entities;
 using RedArbor.Domain.Interface;
 using RedArbor.Tests.Helpers;
 
-namespace RedArbor.Tests.QueriesTests
+namespace RedArbor.Tests.GetAllEmployedQueryTests
 {
     /// <summary>
     /// Tests para GetAllEmployeesQuery

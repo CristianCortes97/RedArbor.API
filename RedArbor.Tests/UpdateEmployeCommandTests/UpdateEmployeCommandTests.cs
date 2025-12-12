@@ -6,7 +6,7 @@ using RedArbor.Domain.Entities;
 using RedArbor.Domain.Interface;
 using RedArbor.Tests.Helpers;
 
-namespace RedArbor.Tests.CommandsTests
+namespace RedArbor.Tests.UpdateEmployeCommandTests
 {
     /// <summary>
     /// Tests para UpdateEmployeeCommand

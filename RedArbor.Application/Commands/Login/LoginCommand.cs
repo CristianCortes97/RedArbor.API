@@ -3,7 +3,6 @@ using Dapper;
 using RedArbor.Application.DTOs;
 using RedArbor.Domain.Entities;
 using RedArbor.Domain.Interface;
-using RedArbor.Domain.Interfaces;
 
 namespace RedArbor.Application.Commands.Login
 {

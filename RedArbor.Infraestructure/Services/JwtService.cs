@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using RedArbor.Domain.Entities;
-using RedArbor.Domain.Interfaces;
+using RedArbor.Domain.Interface;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace RedArbor.Infrastructure.Services
+namespace RedArbor.Infraestructure.Services
 {
     /// <summary>
     /// Servicio para la generación de tokens JWT
