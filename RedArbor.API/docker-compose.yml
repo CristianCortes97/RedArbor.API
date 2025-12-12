@@ -1,0 +1,57 @@
+﻿version: '3.8'
+
+services:
+  # ========== SQL SERVER ==========
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: redarbor-sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=RedArbor2024!
+      - MSSQL_PID=Developer
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - redarbor-network
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P RedArbor2024! -Q 'SELECT 1' -C || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+
+  # ========== API ==========
+  api:
+    build:
+      context: ..
+      dockerfile: RedArbor.API/Dockerfile
+    container_name: redarbor-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=DBReadArbor;User Id=sa;Password=RedArbor2024!;TrustServerCertificate=True;MultipleActiveResultSets=true
+      - JwtSettings__SecretKey=RedArborSuperSecretKey2024ForJWTTokenGeneration123456789
+      - JwtSettings__Issuer=RedArborAPI
+      - JwtSettings__Audience=RedArborClient
+      - JwtSettings__ExpirationMinutes=60
+    ports:
+      - "5000:80"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    networks:
+      - redarbor-network
+    restart: on-failure
+
+# ========== VOLUMES ==========
+volumes:
+  sqlserver_data:
+    driver: local
+
+# ========== NETWORKS ==========
+networks:
+  redarbor-network:
+    driver: bridge
