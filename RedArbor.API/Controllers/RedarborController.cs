@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RedArbor.Application.Commands;
 using RedArbor.Application.DTOs;
 using RedArbor.Application.Queries;
@@ -11,6 +12,7 @@ namespace RedArbor.API.Controllers
     /// </summary>
     [Route("api/redarbor")]
     [ApiController]
+    [Authorize]
     public class RedarborController : ControllerBase
     {
         private readonly CreateEmployeeCommand _createCommand;

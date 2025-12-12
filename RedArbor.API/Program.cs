@@ -1,9 +1,14 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RedArbor.Domain.Interface;
+using RedArbor.Domain.Interfaces;
 using RedArbor.Infraestructure.Context;
 using RedArbor.Infraestructure.Factories;
 using RedArbor.Infraestructure.Repository;
+using RedArbor.Infrastructure.Services;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +28,36 @@ builder.Services.AddCors(options =>
     });
 });
 
+
+// Configuración JWT desde appsettings.json
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+var secretKey = jwtSettings["SecretKey"] ?? throw new InvalidOperationException("JWT SecretKey not configured");
+
+// Autenticación JWT
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtSettings["Issuer"],
+        ValidAudience = jwtSettings["Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
+        ClockSkew = TimeSpan.Zero
+    };
+});
+
+builder.Services.AddAuthorization();
+
+// Entity Framework - Contexto de base de datos
+
 builder.Services.AddDbContext<DbredArborContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -33,6 +68,9 @@ builder.Services.AddAutoMapper(typeof(RedArbor.Application.Mappings.MappingProfi
 // Registrar Database Connection Factory para Dapper
 builder.Services.AddSingleton<IDatabaseConnectionFactory, DatabaseConnectionFactory>();
 
+// Servicios de Autenticación
+builder.Services.AddScoped<IJwtService, JwtService>();
+
 // Registrar Repositorios
 builder.Services.AddScoped<IEmployesRepository, EmployeeRepository>();
 
@@ -40,6 +78,7 @@ builder.Services.AddScoped<IEmployesRepository, EmployeeRepository>();
 builder.Services.AddScoped<RedArbor.Application.Commands.CreateEmployeeCommand>();
 builder.Services.AddScoped<RedArbor.Application.Commands.UpdateEmployeeCommand>();
 builder.Services.AddScoped<RedArbor.Application.Commands.DeleteEmployeeCommand>();
+builder.Services.AddScoped<RedArbor.Application.Commands.Login.LoginCommand>();
 
 // Registrar Queries
 builder.Services.AddScoped<RedArbor.Application.Queries.GetAllEmployeesQuery>();
