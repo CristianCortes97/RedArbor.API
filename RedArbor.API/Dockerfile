@@ -1,30 +1,40 @@
-# Consulte https://aka.ms/customizecontainer para aprender a personalizar su contenedor de depuración y cómo Visual Studio usa este Dockerfile para compilar sus imágenes para una depuración más rápida.
-
-# Esta fase se usa cuando se ejecuta desde VS en modo rápido (valor predeterminado para la configuración de depuración)
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER $APP_UID
-WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
-
-
-# Esta fase se usa para compilar el proyecto de servicio
+# ========== ETAPA 1: BUILD ==========
+# Usar la imagen de .NET 8 SDK para compilar
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
+
+# Copiar archivos de proyecto (.csproj) primero para aprovechar cache de Docker
 COPY ["RedArbor.API/RedArbor.API.csproj", "RedArbor.API/"]
-RUN dotnet restore "./RedArbor.API/RedArbor.API.csproj"
+COPY ["RedArbor.Application/RedArbor.Application.csproj", "RedArbor.Application/"]
+COPY ["RedArbor.Domain/RedArbor.Domain.csproj", "RedArbor.Domain/"]
+COPY ["RedArbor.Infraestructure/RedArbor.Infraestructure.csproj", "RedArbor.Infraestructure/"]
+
+# Restaurar paquetes NuGet
+RUN dotnet restore "RedArbor.API/RedArbor.API.csproj"
+
+# Copiar todo el código fuente
 COPY . .
+
+# Compilar la aplicación
 WORKDIR "/src/RedArbor.API"
-RUN dotnet build "./RedArbor.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "RedArbor.API.csproj" -c Release -o /app/build
 
-# Esta fase se usa para publicar el proyecto de servicio que se copiará en la fase final.
+# ========== ETAPA 2: PUBLISH ==========
+# Publicar la aplicación
 FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./RedArbor.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "RedArbor.API.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-# Esta fase se usa en producción o cuando se ejecuta desde VS en modo normal (valor predeterminado cuando no se usa la configuración de depuración)
-FROM base AS final
+# ========== ETAPA 3: RUNTIME ==========
+# Usar la imagen runtime más ligera para ejecutar
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
+
+# Exponer puertos
+EXPOSE 80
+EXPOSE 443
+
+# Copiar los archivos publicados
 COPY --from=publish /app/publish .
+
+# Punto de entrada
 ENTRYPOINT ["dotnet", "RedArbor.API.dll"]
