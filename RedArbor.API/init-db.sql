@@ -13,14 +13,14 @@ GO
 USE DBReadArbor;
 GO
 
--- Crear la tabla Employees si no existe
-IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Employees')
+-- Crear la tabla Employes si no existe
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Employes')
 BEGIN
-    CREATE TABLE Employees (
+    CREATE TABLE Employes (
         Id INT IDENTITY(1,1) PRIMARY KEY,
         CompanyId INT NOT NULL,
         CreatedOn DATETIME NULL,
-        DeletedOn DATETIME NULL,
+        DeleteOn DATETIME NULL,
         Email NVARCHAR(50) NOT NULL,
         Fax NVARCHAR(50) NULL,
         Name NVARCHAR(50) NULL,
@@ -35,7 +35,7 @@ BEGIN
     );
 
     -- Insertar datos de prueba
-    INSERT INTO Employees (CompanyId, Email, Password, PortalId, RoleId, StatusId, Username, Name, CreatedOn)
+    INSERT INTO Employes (CompanyId, Email, Password, PortalId, RoleId, StatusId, Username, Name, CreatedOn)
     VALUES 
     (1, 'admin@redarbor.com', 'admin123', 1, 1, 1, 'admin', 'Administrator', GETDATE()),
     (1, 'test1@test.test.tmp', 'test', 1, 1, 1, 'test1', 'Test User', GETDATE());
