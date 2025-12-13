@@ -16,7 +16,7 @@
 - **Dapper** para lecturas (optimización)
 - **AutoMapper** para mapeo de objetos
 - **FluentValidation** para validaciones
-- **36+ Tests Unitarios** (xUnit, Moq, FluentAssertions)
+- ** Tests Unitarios** (xUnit, Moq, FluentAssertions)
 - **Swagger/OpenAPI** documentación tecnica
 - **Docker & Docker Compose**
 - **Principios SOLID** aplicados
